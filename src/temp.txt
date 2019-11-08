@@ -1,0 +1,46 @@
+
+package Models
+
+import scala.collection.mutable
+
+object Trie {
+
+  case class TrieNode(letter: Char, word: String, child: mutable.HashMap[Char, TrieNode])
+
+  val root: TrieNode = TrieNode(' ', "", new mutable.HashMap[Char, TrieNode]())
+
+  def add(word: String): Unit = {
+    var node = root
+    var letterCtr = 1
+
+    for(ch <- word) {
+      // if current letter is not in child trie map, add node
+      if(!(node.child isDefinedAt ch)) {
+        if(letterCtr == word.length) {
+          node.child += (ch -> TrieNode(ch, word, new mutable.HashMap[Char, TrieNode]()))
+        } else {
+          node.child += (ch -> TrieNode(ch, "", new mutable.HashMap[Char, TrieNode]()))
+        }
+      }
+      // set current node to child with character key
+      node = node.child(ch)
+      letterCtr += 1
+    }
+  }
+
+  var currentNode = root
+
+  def findWord(ch: Char): String = {
+    if(currentNode.child isDefinedAt ch) {
+      currentNode = currentNode.child(ch)
+    } else {
+      if(root.child isDefinedAt ch) {
+        currentNode = root.child(ch)
+      } else {
+        currentNode = root
+      }
+    }
+    currentNode.word
+  }
+}
+
