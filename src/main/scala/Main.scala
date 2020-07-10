@@ -1,5 +1,6 @@
 import java.time.Duration
 
+import Broker.KafkaProducer
 import Models.Generator.GenClass.{StartGenCharacters, StartGenDictionary}
 import Models.Generator.GenData
 import akka.actor.{ActorSystem, Props}
@@ -20,8 +21,9 @@ object Main {
 
     println("Kafka Streams Word Recognition Test program...")
 
-    //Create Akka actor for character/word simulator
+    //Create actors for Kafka Producer, character/word simulator
     val system = ActorSystem("WordRecog")
+    val kafkaProducer = system.actorOf(Props[KafkaProducer], "kafkaProducer")
     val genData = system.actorOf(Props(new GenData(kafkaProducer)), "genData")
 
     val numWords = 100 // number of words to stream between between random characters
