@@ -1,6 +1,5 @@
 import java.time.Duration
 
-import Broker.KafkaProducer
 import Models.Generator.GenClass.{StartGenCharacters, StartGenDictionary}
 import Models.Generator.GenData
 import akka.actor.{ActorSystem, Props}
